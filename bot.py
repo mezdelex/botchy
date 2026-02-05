@@ -1,14 +1,21 @@
 """Bot module"""
 
-import json
-import discord
+from typing import TypedDict, cast
 import actions
+import discord
+import json
+
+
+class BotSettings(TypedDict):
+    invite_url: str
+    token: str
+
 
 with open("settings.json", encoding="utf-8") as settings:
-    settings = json.load(settings)
+    settings = cast(BotSettings, json.load(settings))
 
-INVITE_URL = settings["invite_url"]
-TOKEN = settings["token"]
+INVITE_URL: str = settings["invite_url"]
+TOKEN: str = settings["token"]
 
 
 def run_discord_bot():
@@ -23,7 +30,7 @@ def run_discord_bot():
         print(f"The invite url is {INVITE_URL}")
 
     @client.event
-    async def on_message(message):
+    async def on_message(message: discord.Message):
         if message.author == client.user:
             return
 
